@@ -10,15 +10,25 @@
       <h2>The Great</h2>
       <h1 id="header-clue">rgb(xxx,xxx,xxx)</h1>
       <h2>Guessing Game</h2>
+      <h1>Number of Tries : <span id = "demo"></span></h1>
+      <button onclick="newGame()">New Game</button>
     </div>
     <div id="container">
       <div class="tile" id="1"></div>
       <div class="tile" id="2"></div>
+      <div class="tile" id="3"></div>
+      <div class="tile" id="4"></div>
+      <div class="tile" id="5"></div>
+      <div class="tile" id="6"></div>
     </div>
 
     <script>
-      var t1 = document.getElementById("1");
-      var t2 = document.getElementById("2");
+      var counter;
+      var t = new Array();
+      for(var i = 1; i<7; i++){
+        t[i] = document.getElementById(i);
+      }
+
       var x;
       var correctColor;
 
@@ -32,36 +42,39 @@
       }
 
       function newGame() {
-        t1.style.background = getRandomColor();
-        t2.style.background = getRandomColor();
+        counter = 0;
+        document.getElementById("demo").innerHTML = 0;
+        for(var i = 1; i<7; i++){
+          t[i].style.background = getRandomColor();
+        }
 
-        x = Math.floor(Math.random() * 2 + 1);
+        x = Math.floor(Math.random() * 6 + 1);
 
-        if (x == 1) correctColor = t1.style.background;
-        else correctColor = t2.style.background;
-        /* console.log(x);
-        console.log(correctColor); */
+       correctColor = t[x].style.background;
+       console.log(x);
+        console.log(correctColor); 
 
         document.getElementById("header-clue").innerHTML = correctColor;
       }
 
-      t1.addEventListener("click", function () {
-        if (t1.style.background == correctColor) {
-          t2.style.background = correctColor;
-          document.getElementById("header").style.background = correctColor;
-        } else {
-          t1.style.background = "black";
-        }
-      });
+      for(let i = 1; i<7; i++) {
+        t[i].addEventListener("click", function() {
+          if(t[i].style.background !== "black") {
+            counter++;
+            console.log(counter);
+            document.getElementById("demo").innerHTML = counter;
+          }
+          if(t[i].style.background == correctColor) {
+            for(let j = 1; j<7; j++)
+              t[j].style.background = correctColor;
+            document.getElementById("header").style.background = correctColor;
+            newGame();
+          } else {
+            t[i].style.background = "black";
+          }
+        });
+      }
 
-      t2.addEventListener("click", function () {
-        if (t2.style.background == correctColor) {
-          t1.style.background = correctColor;
-          document.getElementById("header").style.background = correctColor;
-        } else {
-          t2.style.background = "black";
-        }
-      });
     </script>
   </body>
 </html>
